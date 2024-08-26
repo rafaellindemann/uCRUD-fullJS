@@ -8,7 +8,7 @@ function App() {
     // Função para buscar todos os clientes
     const fetchClientes = async () => {
         try {
-            const response = await axios.get('/clientes');
+            const response = await axios.get('http://localhost:3000/clientes');
             setClientes(response.data);
         } catch (error) {
             console.error('Erro ao buscar clientes:', error);
@@ -23,7 +23,7 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/clientes', form);
+            const response = await axios.post('http://localhost:3000/clientes', form);
             if (response.status === 201) {
                 fetchClientes(); // Atualiza a lista de clientes após a adição
                 setForm({ nome: '', endereco: '', email: '', telefone: '' }); // Limpa o formulário
