@@ -1,3 +1,25 @@
+# O Server
+
+MVP de um server simples implementando as 5 rotas básicas para praticar a comunicação do front com back. Backend feito em NodeJS para um BD PostgreSQL.
+
+## Para rodar:
+```
+npm start 
+```
+
+O server sobe por padrão em `http://localhost:3000/`
+
+## Dependências
+```
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  },
+```
+
+
+# Doc e Teste da API
 Aqui está um guia para testar cada rota da sua API no Postman. Vou descrever as consultas necessárias para `GET`, `POST`, `PUT`, e `DELETE`, juntamente com os parâmetros que você deve enviar para cada uma e a forma como eles devem ser enviados.
 
 ### 1. **GET: Buscar todos os clientes**
@@ -11,6 +33,19 @@ Aqui está um guia para testar cada rota da sua API no Postman. Vou descrever as
    - Selecione o método `GET`.
    - Cole a URL `http://localhost:3000/clientes`.
    - Clique em "Send".
+
+### 1b. **GET: buscar um cliente por ID**
+   - **Método**: `GET`
+   - **URL**: `http://localhost:3000/clientes/:id` (substitua :id pelo ID do cliente que deseja buscar, por exemplo, 1)
+   - **Descrição**: Retorna o cliente com o id passado.
+   - **Parâmetros**: O id do cliente é passado diretamente na URL.
+   - **Forma de envio**: O `id` é passado diretamente na URL.
+
+   **No Postman:**
+   - Selecione o método `GET`.
+   - Cole a URL `http://localhost:3000/clientes/1`.
+   - Clique em "Send".
+
 
 ### 2. **POST: Adicionar um novo cliente**
    - **Método**: `POST`
@@ -80,7 +115,7 @@ Aqui está um guia para testar cada rota da sua API no Postman. Vou descrever as
    - Cole a URL `http://localhost:3000/clientes/1` (substitua `1` pelo `id` do cliente que deseja deletar).
    - Clique em "Send".
 
-### Resumo dos Testes:
+### Resumo das rotas:
 
 - **GET** (`/clientes`): Retorna todos os clientes.
 - **POST** (`/clientes`): Adiciona um novo cliente, enviando um JSON no corpo.
