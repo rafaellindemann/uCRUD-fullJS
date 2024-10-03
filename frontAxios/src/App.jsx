@@ -19,6 +19,9 @@ function App() {
     useEffect(() => {
         fetchClientes();
     }, []);
+    useEffect(() => {
+        console.log(clientes);
+    }, [clientes]);
 
     // Função para lidar com o envio do formulário (adicionar ou atualizar)
     const handleSubmit = async (e) => {

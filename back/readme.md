@@ -2,7 +2,7 @@
 
 MVP de um server simples implementando as 5 rotas básicas para praticar a comunicação do front com back. Backend feito em NodeJS para um BD PostgreSQL.
 
-## Para rodar:
+## Para rodar o server:
 ```
 npm start 
 ```
@@ -16,6 +16,21 @@ O server sobe por padrão em `http://localhost:3000/`
     "express": "^4.19.2",
     "pg": "^8.12.0"
   },
+```
+
+# reCriar o BD
+```
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    endereco VARCHAR(200),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone VARCHAR(20)
+);
+```
+## Popular o BD
+```
+Rodar o front e cadastrar alguns registros rapidão.
 ```
 
 
