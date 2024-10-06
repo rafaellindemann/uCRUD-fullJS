@@ -15,6 +15,11 @@ Status da implementação:
 
 MVP de um server simples implementando as 5 rotas básicas para praticar a comunicação do front com back. Backend feito em NodeJS para um BD PostgreSQL.
 
+## Para instalar as dependências, entre na pasta 'back' e execute:
+```
+npm install
+```
+
 ## Para rodar o server:
 ```
 npm start 
@@ -155,6 +160,11 @@ Certifique-se de que o servidor está rodando (`node server.js`) e que você tem
 
 
 # Front React + axios
+
+## Para instalar as dependências, entre na pasta 'frontAxios' e execute:
+```
+npm install
+```
 
 ## Para rodar:
 ```
