@@ -10,13 +10,13 @@ Um micro CRUD de clientes baseado em React JS, NodeJS e PostgreSQL.
 Status da implementação: 
 - 5 rotas do back testadas com postman e funcionando.
 - 5 rotas funcionando no front com axios.
-- wip front com fetch
+- wip front com fetch, vai sair em breve...
 
 
 
 # O Server, backend em NodeJS
 
-MVP de um server simples implementando as 5 rotas básicas para praticar a comunicação do front com back. Backend feito em NodeJS para um BD PostgreSQL.
+MVP de um server simples implementando as 5 rotas básicas para praticar a comunicação do front com back. Backend feito em NodeJS para um BD PostgreSQL usando a lib 'pg'.
 
 ## Para instalar as dependências, entre na pasta 'back' e execute:
 ```
