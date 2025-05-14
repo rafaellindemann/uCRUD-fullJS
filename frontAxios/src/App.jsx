@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
     const [clientes, setClientes] = useState([]);
-    const [form, setForm] = useState({ nome: '', endereco: '', email: '', telefone: '' });
+    // const [form, setForm] = useState({ nome: '', endereco: '', email: '', telefone: '' });
     const [selectedCliente, setSelectedCliente] = useState(null); // Cliente selecionado para update
+
+    const [inputNome, setInputNome] = useState('')
+    const [inputEmail, setInputEmail] = useState('')
+    const [inputEndereco, setInputEndereco] = useState('')
+    const [inputTelefone, setInputTelefone] = useState('')
 
     // Função para buscar todos os clientes
     const fetchClientes = async () => {
@@ -24,23 +30,28 @@ function App() {
     }, [clientes]);
 
     // Função para lidar com o envio do formulário (adicionar ou atualizar)
-    const handleSubmit = async (e) => {
+    const enviarCliente = async (e) => {
         e.preventDefault();
         try {
+            let cliente = {
+                nome: inputNome,
+                endereco: inputEndereco,
+                email: inputEmail,
+                telefone: inputTelefone,
+                // id: selectedCliente.id
+            }
             if (selectedCliente) {
                 // Atualizar cliente existente (PUT)
-                const response = await axios.put(`http://localhost:3000/clientes/${selectedCliente.id}`, form);
+                const response = await axios.put(`http://localhost:3000/clientes/${selectedCliente.id}`, cliente);
                 if (response.status === 200) {
                     fetchClientes(); // Atualiza a lista de clientes após a edição
-                    setForm({ nome: '', endereco: '', email: '', telefone: '' }); // Limpa o formulário
                     setSelectedCliente(null); // Reseta o cliente selecionado
                 }
             } else {
                 // Adicionar novo cliente (POST)
-                const response = await axios.post('http://localhost:3000/clientes', form);
+                const response = await axios.post('http://localhost:3000/clientes', cliente);
                 if (response.status === 201) {
                     fetchClientes(); // Atualiza a lista de clientes após a adição
-                    setForm({ nome: '', endereco: '', email: '', telefone: '' }); // Limpa o formulário
                 }
             }
         } catch (error) {
@@ -71,141 +82,67 @@ function App() {
         }
     };
 
+    function limparCampos() {
+        setInputNome('')
+        setInputEmail('')
+        setInputEndereco('')
+        setInputTelefone('')
+    }
+
     return (
         <div>
             <h1>CRUD de Clientes</h1>
 
             {/* Formulário para adicionar/atualizar clientes */}
-            <form onSubmit={handleSubmit}>
+            <div>
                 <input
                     type="text"
                     placeholder="Nome"
-                    value={form.nome}
-                    onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                    value={inputNome}
+                    onChange={(event) => setInputNome(event.target.value)}
                     required
                 />
                 <input
                     type="text"
                     placeholder="Endereço"
-                    value={form.endereco}
-                    onChange={(e) => setForm({ ...form, endereco: e.target.value })}
+                    value={inputEndereco}
+                    onChange={(event) => setInputEndereco(event.target.value)}
                 />
                 <input
                     type="email"
                     placeholder="Email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    value={inputEmail}
+                    onChange={(event) => setInputEmail(event.target.value)}
                     required
                 />
                 <input
                     type="text"
                     placeholder="Telefone"
-                    value={form.telefone}
-                    onChange={(e) => setForm({ ...form, telefone: e.target.value })}
+                    value={inputTelefone}
+                    onChange={(event) => setInputTelefone(event.target.value)}
                 />
-                <button type="submit">
+                <button type="buton" onClick={enviarCliente}>
                     {selectedCliente ? 'Atualizar Cliente' : 'Adicionar Cliente'}
                 </button>
-            </form>
+            </div>
 
             {/* Lista de clientes */}
-            <ul>
+            <section className='clientes'>
                 {clientes.map((cliente) => (
-                    <li key={cliente.id}>
-                        {cliente.nome} - {cliente.email} - {cliente.telefone}
+                    <div key={cliente.id} className='cliente'>
+                        <p>{cliente.nome}</p>
+                        <p>{cliente.email}</p>
+                        <p>{cliente.telefone}</p>
+                        <p>{cliente.endereco}</p>
+                        <p>{cliente.id}</p>
                         <button onClick={() => fetchClienteById(cliente.id)}>Editar</button>
                         <button onClick={() => deleteCliente(cliente.id)}>Deletar</button>
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </section>
         </div>
     );
 }
 
 export default App;
 
-
-
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// function App() {
-//     const [clientes, setClientes] = useState([]);
-//     const [form, setForm] = useState({ nome: '', endereco: '', email: '', telefone: '' });
-
-//     // Função para buscar todos os clientes
-//     const fetchClientes = async () => {
-//         try {
-//             const response = await axios.get('http://localhost:3000/clientes');
-//             setClientes(response.data);
-//         } catch (error) {
-//             console.error('Erro ao buscar clientes:', error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchClientes();
-//     }, []);
-
-//     // Função para lidar com o envio do formulário
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         try {
-//             const response = await axios.post('http://localhost:3000/clientes', form);
-//             if (response.status === 201) {
-//                 fetchClientes(); // Atualiza a lista de clientes após a adição
-//                 setForm({ nome: '', endereco: '', email: '', telefone: '' }); // Limpa o formulário
-//             }
-//         } catch (error) {
-//             console.error('Erro ao adicionar cliente:', error);
-//         }
-//     };
-
-//     return (
-//         <div>
-//             <h1>CRUD de Clientes</h1>
-
-//             {/* Formulário para adicionar clientes */}
-//             <form onSubmit={handleSubmit}>
-//                 <input
-//                     type="text"
-//                     placeholder="Nome"
-//                     value={form.nome}
-//                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
-//                     required
-//                 />
-//                 <input
-//                     type="text"
-//                     placeholder="Endereço"
-//                     value={form.endereco}
-//                     onChange={(e) => setForm({ ...form, endereco: e.target.value })}
-//                 />
-//                 <input
-//                     type="email"
-//                     placeholder="Email"
-//                     value={form.email}
-//                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-//                     required
-//                 />
-//                 <input
-//                     type="text"
-//                     placeholder="Telefone"
-//                     value={form.telefone}
-//                     onChange={(e) => setForm({ ...form, telefone: e.target.value })}
-//                 />
-//                 <button type="submit">Adicionar Cliente</button>
-//             </form>
-
-//             {/* Lista de clientes */}
-//             <ul>
-//                 {clientes.map(cliente => (
-//                     <li key={cliente.id}>
-//                         {cliente.nome} - {cliente.email} - {cliente.telefone}
-//                     </li>
-//                 ))}
-//             </ul>
-//         </div>
-//     );
-// }
-
-// export default App;

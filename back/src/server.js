@@ -5,9 +5,12 @@ const { Pool } = require('pg');
 const app = express();
 const pool = new Pool({
     user: 'postgres', // Substitua pelo seu usuário do PostgreSQL
+    // user: 'postgre', // Substitua pelo seu usuário do PostgreSQL
+    // user: 'senai', // Substitua pelo seu usuário do PostgreSQL
     host: 'localhost',
     database: 'crud_cliente_demo', // Nome da sua database
-    password: 'senai', // Substitua pela sua senha
+    // password: 'senai', // Substitua pela sua senha
+    password: 'postgre', // Substitua pela sua senha
     port: 5432, // Porta padrão do PostgreSQL
 });
 
