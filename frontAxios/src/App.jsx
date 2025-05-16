@@ -131,11 +131,8 @@ function App() {
                     value={inputTelefone}
                     onChange={(event) => setInputTelefone(event.target.value)}
                 />
-                {clienteSelecionado ? (
-                    <button type="button" onClick={salvarCliente}>Salvar Alterações</button>
-                ) : (
-                    <button type="button" onClick={cadastrarCliente}>Cadastrar Cliente</button>
-                )}
+                {clienteSelecionado && <button type="button" onClick={salvarCliente}>Salvar Alterações</button>}
+                {!clienteSelecionado && <button type="button" onClick={cadastrarCliente}>Cadastrar Cliente</button>}
             </div>
 
             <section className='clientes'>
