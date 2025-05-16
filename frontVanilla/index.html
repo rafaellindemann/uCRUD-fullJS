@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRUD de Clientes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <h1>CRUD de Clientes</h1>
+
+    <div class="form">
+      <div class="input-container">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" placeholder="Jorge Tadeu" required />
+      </div>
+      <div class="input-container">
+        <label for="endereco">Endereço</label>
+        <input type="text" id="endereco" placeholder="Praça da Árvore" />
+      </div>
+      <div class="input-container">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="jorge@florista.com" required />
+      </div>
+      <div class="input-container">
+        <label for="telefone">Telefone</label>
+        <input type="text" id="telefone" placeholder="48 99999-9999" />
+      </div>
+      <button id="btnCadastrar">Cadastrar Cliente</button>
+      <button id="btnSalvar" style="display: none;">Salvar Alterações</button>
+    </div>
+
+    <section class="clientes" id="clientes"></section>
+  </div>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/clientes';
+    const nomeInput = document.getElementById('nome');
+    const enderecoInput = document.getElementById('endereco');
+    const emailInput = document.getElementById('email');
+    const telefoneInput = document.getElementById('telefone');
+    const btnCadastrar = document.getElementById('btnCadastrar');
+    const btnSalvar = document.getElementById('btnSalvar');
+    const clientesContainer = document.getElementById('clientes');
+
+    let clienteSelecionado = null;
+
+    async function fetchClientes() {
+      try {
+        const response = await fetch(apiUrl);
+        const clientes = await response.json();
+        renderClientes(clientes);
+      } catch (error) {
+        console.error('Erro ao buscar clientes:', error);
+      }
+    }
+
+    function renderClientes(clientes) {
+      clientesContainer.innerHTML = '';
+      clientes.forEach(cliente => {
+        const div = document.createElement('div');
+        div.className = 'cliente';
+        div.innerHTML = `
+          <h2>${cliente.nome}</h2>
+          <p>${cliente.email}</p>
+          <p>${cliente.telefone}</p>
+          <p>${cliente.endereco}</p>
+          <p>ID: ${cliente.id}</p>
+          <button onclick="editarCliente(${cliente.id})">Editar</button>
+          <button onclick="deletarCliente(${cliente.id})">Deletar</button>
+        `;
+        clientesContainer.appendChild(div);
+      });
+    }
+
+    async function cadastrarCliente() {
+      const cliente = getFormData();
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cliente)
+        });
+        if (response.status === 201) {
+          limparForm();
+          fetchClientes();
+        }
+      } catch (error) {
+        console.error('Erro ao adicionar cliente:', error);
+      }
+    }
+
+    async function editarCliente(id) {
+      try {
+        const response = await fetch(`${apiUrl}/${id}`);
+        const cliente = await response.json();
+        clienteSelecionado = cliente;
+        preencherFormulario(cliente);
+        btnCadastrar.style.display = 'none';
+        btnSalvar.style.display = 'inline-block';
+      } catch (error) {
+        console.error('Erro ao buscar cliente:', error);
+      }
+    }
+
+    async function salvarCliente() {
+      const cliente = getFormData();
+      try {
+        const response = await fetch(`${apiUrl}/${clienteSelecionado.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(cliente)
+        });
+        if (response.status === 200) {
+          limparForm();
+          clienteSelecionado = null;
+          btnCadastrar.style.display = 'inline-block';
+          btnSalvar.style.display = 'none';
+          fetchClientes();
+        }
+      } catch (error) {
+        console.error('Erro ao atualizar cliente:', error);
+      }
+    }
+
+    async function deletarCliente(id) {
+      try {
+        const response = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+        if (response.status === 200) fetchClientes();
+      } catch (error) {
+        console.error('Erro ao deletar cliente:', error);
+      }
+    }
+
+    function getFormData() {
+      return {
+        nome: nomeInput.value,
+        endereco: enderecoInput.value,
+        email: emailInput.value,
+        telefone: telefoneInput.value
+      };
+    }
+
+    function preencherFormulario(cliente) {
+      nomeInput.value = cliente.nome || '';
+      enderecoInput.value = cliente.endereco || '';
+      emailInput.value = cliente.email || '';
+      telefoneInput.value = cliente.telefone || '';
+    }
+
+    function limparForm() {
+      nomeInput.value = '';
+      enderecoInput.value = '';
+      emailInput.value = '';
+      telefoneInput.value = '';
+    }
+
+    btnCadastrar.addEventListener('click', cadastrarCliente);
+    btnSalvar.addEventListener('click', salvarCliente);
+
+    fetchClientes();
+  </script>
+</body>
+</html>
