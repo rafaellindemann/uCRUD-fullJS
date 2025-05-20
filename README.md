@@ -157,3 +157,123 @@ Feito com 💙 por [rafaellindemann](https://github.com/rafaellindemann)
 
 ---
 
+# Bônus
+## Mini tutorial para testar o backend com Postman
+
+Vambora testar pelo Postman as rotas implementadas no projeto.
+
+---
+
+# 🧪 Testando a API com Postman
+
+Este mini tutorial ensina como testar manualmente a API REST do seu backend (MySQL ou PostgreSQL) utilizando o Postman.
+
+> 💡 A API deve estar rodando em `http://localhost:3000`.
+
+---
+
+## 📥 1. **GET /clientes** — Listar todos os clientes
+
+* **Método**: `GET`
+* **URL**: `http://localhost:3000/clientes`
+* **Objetivo**: Retorna todos os clientes cadastrados.
+
+### No Postman:
+
+1. Selecione o método `GET`
+2. Cole a URL acima
+3. Clique em **Send**
+4. Você verá uma lista de objetos `cliente` no painel de resposta.
+
+---
+
+## 🔍 2. **GET /clientes/\:id** — Buscar cliente específico
+
+* **Método**: `GET`
+* **URL**: `http://localhost:3000/clientes/1` (substitua `1` pelo ID desejado)
+* **Objetivo**: Retorna os dados de um cliente específico.
+
+### No Postman:
+
+1. Selecione o método `GET`
+2. Insira a URL com um ID real
+3. Clique em **Send**
+
+---
+
+## ➕ 3. **POST /clientes** — Criar novo cliente
+
+* **Método**: `POST`
+* **URL**: `http://localhost:3000/clientes`
+* **Objetivo**: Adiciona um novo cliente ao banco.
+
+### Payload (JSON):
+
+```json
+{
+  "nome": "João Silva",
+  "endereco": "Rua Exemplo, 123",
+  "email": "joao@email.com",
+  "telefone": "11999999999"
+}
+```
+
+### No Postman:
+
+1. Método `POST`
+2. Aba `Body` → Selecione `raw` + `JSON`
+3. Cole o JSON acima
+4. Clique em **Send**
+5. O cliente será criado, e os dados retornados na resposta.
+
+---
+
+## ✏️ 4. **PUT /clientes/\:id** — Atualizar cliente existente
+
+* **Método**: `PUT`
+* **URL**: `http://localhost:3000/clientes/1` (troque o ID)
+* **Objetivo**: Atualiza os dados de um cliente.
+
+### Payload (JSON):
+
+```json
+{
+  "nome": "João Atualizado",
+  "endereco": "Rua Nova, 456",
+  "email": "joao.novo@email.com",
+  "telefone": "21999999999"
+}
+```
+
+### No Postman:
+
+1. Método `PUT`
+2. Aba `Body` → `raw` + `JSON`
+3. Insira os dados atualizados
+4. Clique em **Send**
+
+---
+
+## ❌ 5. **DELETE /clientes/\:id** — Remover cliente
+
+* **Método**: `DELETE`
+* **URL**: `http://localhost:3000/clientes/1` (substitua com o ID real)
+* **Objetivo**: Remove o cliente do banco de dados.
+
+### No Postman:
+
+1. Método `DELETE`
+2. Insira a URL com o ID do cliente a ser removido
+3. Clique em **Send**
+
+---
+
+## 🧾 Dica Final
+
+* Sempre use **Content-Type: application/json** no cabeçalho ao enviar corpo em POST/PUT.
+* Certifique-se que o backend está rodando antes de testar.
+* Use `GET /clientes` após POST/PUT/DELETE para conferir se deu tudo certo.
+
+---
+
+
