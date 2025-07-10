@@ -148,6 +148,7 @@ function App() {
             </div>
 
             <section className='clientes'>
+                {console.log(clientes)}
                 {clientes.map((cliente) => (
                     <div key={cliente.id} className='cliente'>
                         <h2>{cliente.nome}</h2>
