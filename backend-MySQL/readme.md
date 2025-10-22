@@ -96,3 +96,10 @@ Feito com 💙 por [rafaellindemann](https://github.com/rafaellindemann)
 
 
 
+INSERT INTO clientes (nome, endereco, email, telefone) VALUES
+('Ana Clara Silva', 'Rua das Flores, 100 - Centro', 'ana.silva@email.com', '(11) 98765-4321'),
+('Bruno Eduardo Souza', 'Av. Principal, 550 - Jardim América', 'bruno.souza@email.com', '(21) 99887-7665'),
+('Carla Rodrigues Almeida', 'Travessa da Paz, 12 - Vila Nova', 'carla.almeida@email.com', '(31) 97766-5432'),
+('Daniela Martins Pereira', 'Rua Beta, 30, Bloco C - Setor Industrial', 'dani.pereira@email.com', '(41) 96543-2109'),
+('Felipe Oliveira Costa', 'Alameda dos Anjos, 10 - Bairro Novo', 'felipe.costa@email.com', '(51) 95432-1098');
+
