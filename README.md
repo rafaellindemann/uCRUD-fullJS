@@ -276,4 +276,115 @@ Este mini tutorial ensina como testar manualmente a API REST do seu backend (MyS
 
 ---
 
+# Bônus 1: Sobre o try/catch 
+O bloco `try/catch` tem a função de **tratar erros** que possam acontecer durante a execução da rota `/clientes` no backend.
+Vamos detalhar:
 
+---
+
+### **Como ele funciona passo a passo**
+
+```javascript
+app.get('/clientes', async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM clientes');
+        res.json(rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: 'Erro ao buscar clientes' });
+    }
+});
+```
+
+#### 1. **`try` — tentativa de execução**
+
+* Tudo que está dentro do bloco `try` será executado **normalmente**.
+* Aqui, ele faz uma consulta no banco de dados:
+
+  ```javascript
+  const [rows] = await pool.query('SELECT * FROM clientes');
+  ```
+* Se der tudo certo, ele retorna os dados dos clientes em JSON:
+
+  ```javascript
+  res.json(rows);
+  ```
+
+#### 2. **Se ocorrer um erro**
+
+* Se a conexão com o banco falhar, a tabela não existir ou ocorrer qualquer exceção durante a execução do `await pool.query(...)`, o fluxo **salta diretamente para o bloco `catch`**.
+
+#### 3. **`catch` — tratamento do erro**
+
+* O erro capturado fica disponível na variável `err`.
+* O código imprime a mensagem de erro no terminal do servidor:
+
+  ```javascript
+  console.error(err.message);
+  ```
+* E responde para o cliente (navegador ou frontend) com um **status HTTP 500** (erro interno no servidor) e uma mensagem amigável:
+
+  ```javascript
+  res.status(500).json({ error: 'Erro ao buscar clientes' });
+  ```
+
+---
+
+### **Por que usar try/catch em rotas async**
+
+* Chamadas assíncronas (com `await`) podem **lançar exceções** se algo der errado.
+* Sem `try/catch`, o servidor **quebraria a execução da rota** e poderia até cair completamente, dependendo do caso.
+* Com `try/catch`, você **controla a resposta ao usuário** e mantém o servidor rodando com segurança.
+
+---
+
+**Resumindo:**
+
+* `try` → executa o código que pode falhar.
+* `catch` → intercepta o erro caso ocorra e permite tratá-lo de forma segura.
+* Isso evita que a aplicação quebre e melhora a experiência do usuário, que recebe uma resposta clara mesmo em caso de falhas.
+
+## Bônus 1.1: Mas isso antecipa a falha ou trata ela depois de acontecer?
+
+**O `try/catch` não antecipa a falha** — ele **deixa o erro acontecer** e então **intercepta e trata** esse erro depois que ele ocorre.
+
+Vamos ilustrar:
+
+---
+
+### Exemplo mental
+
+Imagine que dentro do `try` você tem:
+
+```javascript
+const [rows] = await pool.query('SELECT * FROM clientes');
+```
+
+Se o banco estiver fora do ar ou a tabela `clientes` não existir, a função `pool.query(...)` **vai lançar uma exceção**.
+
+* **Sem try/catch** → o erro “estoura” e pode derrubar a rota (ou até todo o servidor, se não for tratado em nenhum lugar).
+* **Com try/catch** → o erro acontece igual, mas é **“capturado”** pelo `catch`, permitindo que você trate a situação de forma controlada (ex: enviar uma mensagem amigável ao usuário).
+
+---
+
+### Ou seja:
+
+* `try/catch` **não evita que o erro ocorra**.
+* Ele **evita que o erro não tratado quebre a aplicação**.
+* E permite que você defina **como reagir** quando o erro acontecer.
+
+---
+
+**Analogia:**
+Pense no `try` como dirigir um carro e no `catch` como o **airbag**:
+
+* O airbag não impede o acidente.
+* Mas quando ele acontece, o airbag amortece e protege — evitando consequências piores.
+
+---
+
+**Resumo final:**
+
+> O `try/catch` não previne erros — ele trata erros **depois** que eles acontecem, de forma controlada e segura.
+
+//
